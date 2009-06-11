@@ -7,7 +7,6 @@ import mud.client.action.GetNewPlayerResponse;
 import mud.client.action.Response;
 import mud.client.action.TypedAction;
 import mud.client.action.TypedResponse;
-import mud.client.model.Player;
 import mud.client.model.Room;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -39,7 +38,7 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
   }
 
   public GetNewPlayerResponse execute(GetNewPlayerAction action) {
-    return new GetNewPlayerResponse(Player.createJedi("anon", 100));
+    return new GetNewPlayerResponse(mgr.createPlayer());
   }
 
   public <T extends Response> T execute(Action action) {
