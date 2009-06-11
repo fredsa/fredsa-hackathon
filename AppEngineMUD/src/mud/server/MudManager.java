@@ -61,6 +61,7 @@ public class MudManager {
     Room room = getRoom(KEY_GLOBAL_ROOM);
     Character player = Player.createJedi("anon", 100);
     room.addCharacter(player);
+    cache.put(KEY_GLOBAL_ROOM, room);
     return player;
   }
 
