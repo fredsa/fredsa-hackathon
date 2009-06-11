@@ -2,6 +2,7 @@ package mud.server;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Collection;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
