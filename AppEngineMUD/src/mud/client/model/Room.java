@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 
-import mud.client.util.MemcacheIdSource;
+import mud.client.util.TimeIdSource;
 
 /**
  * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 12:27:53 PM To change this
@@ -21,7 +21,7 @@ public class Room implements Serializable {
   }
 
   public Room createRoom() {
-    return new Room(MemcacheIdSource.getInstance().getNewId());
+    return new Room(TimeIdSource.getInstance().getNewId());
   }
 
   public void connectToRoom(Room room) {
