@@ -1,6 +1,9 @@
 package mud.client.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 import mud.client.util.TimeIdSource;
 
@@ -20,6 +23,7 @@ public class Player implements Character, Serializable {
   private /*final*/ int strength;
   private /*final*/ String name;
   private /*final*/ LifeStyle lifeStyle;
+  private /*final*/ List<String> unreadMessages = new ArrayList<String>();
   private int hitPoints;
 
   /**
@@ -85,6 +89,18 @@ public class Player implements Character, Serializable {
 
   public int getStrength() {
     return strength;
+  }
+
+  public void addMessage(String message) {
+    unreadMessages.add(message);
+  }
+
+  public List<String> getUnreadMessages() {
+    return Collections.unmodifiableList(unreadMessages);
+  }
+
+  public void clearUnreadMessages() {
+    unreadMessages.clear();
   }
 
   public String getId() {
