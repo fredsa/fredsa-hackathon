@@ -17,7 +17,11 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
   RoomManager mgr = RoomManager.get();
 
   public TypedResponse execute(TypedAction action) {
-    return new TypedResponse(action.getPlayer().getName() + " said/did: " + action.getText());
+    String text = action.getText().trim() + " ";
+    int pos = (text).indexOf(" ");
+    String cmd = text.substring(0, pos);
+    text = text.substring(pos + 1).trim();
+    return new TypedResponse(action.getPlayer().getName() + " [" + cmd + "] " + text);
   }
 
   public GetNewPlayerResponse execute(GetNewPlayerAction action) {
