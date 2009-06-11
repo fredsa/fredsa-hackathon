@@ -34,27 +34,30 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     int pos = (text).indexOf(" ");
     String cmd = text.substring(0, pos);
     text = text.substring(pos + 1).trim();
+    final Character player = action.getPlayer();
+
+    StringBuffer outputBuffer = new StringBuffer();
     if ("say".equals(cmd) || "'".equals(cmd)) {
-      String playerQuote = action.getPlayer().getName() + " said: " + text;
-      mud.client.model.Character player = action.getPlayer();
+      String playerQuote = player.getName() + " said: " + text;
       Room room = mgr.getRoomByPlayerId(player.getId());
       for (Character character : getCharacters(room.getCharacterIdSet())) {
         character.addMessage(playerQuote);
       }
-
-      return new TypedResponse(playerQuote);
     } else if ("hit".equals(cmd)) {
-      return new TypedResponse(action.getPlayer().getName() + " hit " + text);
+      outputBuffer.append(player.getName() + " hit " + text);
     } else if ("look".equals(cmd)) {
-      Room room = mgr.getRoomByPlayerId(action.getPlayer().getId());
-      String output = room.getDescription();
+      Room room = mgr.getRoomByPlayerId(player.getId());
+      outputBuffer.append(room.getDescription());
       for (Character character : getCharacters(room.getCharacterIdSet())) {
-        output += "\n- " + character.getName();
+        outputBuffer.append("\n- " + character.getName());
       }
-      return new TypedResponse(output);
     } else {
-      return new TypedResponse("what?! Unknown command: " + text);
+      outputBuffer.append("what?! Unknown command: " + text);
     }
+
+    outputBuffer.append(player.getUnreadMessages());
+
+    return new TypedResponse(outputBuffer.toString());
   }
 
   public GetNewPlayerResponse execute(GetNewPlayerAction action) {
