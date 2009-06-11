@@ -4,6 +4,7 @@ import mud.client.action.GetNewPlayerAction;
 import mud.client.action.GotPlayer;
 import mud.client.action.GotTypedResponse;
 import mud.client.action.TypedAction;
+import mud.client.model.Character;
 
 import com.allen_sauer.gwt.log.client.DivLogger;
 import com.allen_sauer.gwt.log.client.Log;
@@ -18,41 +19,50 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AppEngineMUD implements EntryPoint {
 
-	private final RpcServiceAsync rpcService = GWT.create(RpcService.class);
+  private final RpcServiceAsync rpcService = GWT.create(RpcService.class);
 
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		Log.setUncaughtExceptionHandler();
+  /**
+   * This is the entry point method.
+   */
+  public void onModuleLoad() {
+    Log.setUncaughtExceptionHandler();
 
-		RootPanel rootPanel = RootPanel.get();
+    final RootPanel rootPanel = RootPanel.get();
 
-		Log.info("Welcome to App Engine MUD");
-		Widget loggerWidget = Log.getLogger(DivLogger.class).getWidget();
-		rootPanel.add(loggerWidget);
+    Log.info("Welcome to App Engine MUD");
+    Widget loggerWidget = Log.getLogger(DivLogger.class).getWidget();
+    rootPanel.add(loggerWidget);
 
-		final TextBox textBox = new TextBox();
-		rootPanel.add(textBox);
+    rpcService.execute(new GetNewPlayerAction(), new GotPlayer() {
 
-		rpcService.execute(new GetNewPlayerAction(), new GotPlayer());
-		textBox.addKeyDownHandler(new KeyDownHandler() {
+      @Override
+      public void got(Character player) {
+        initUI(rootPanel, player);
+      }
 
-			public void onKeyDown(KeyDownEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					rpcService.execute(new TypedAction(textBox.getText()),
-							new GotTypedResponse() {
+    });
+  }
 
-								@Override
-								public void got(String text) {
-									Log.info(text);
-								}
-							});
-					textBox.setText("");
-				}
-			}
-		});
+  private void initUI(RootPanel rootPanel, final Character player) {
+    final TextBox textBox = new TextBox();
+    rootPanel.add(textBox);
+    textBox.addKeyDownHandler(new KeyDownHandler() {
 
-		textBox.setFocus(true);
-	}
+      public void onKeyDown(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+          rpcService.execute(new TypedAction(player, textBox.getText()), new GotTypedResponse() {
+
+            @Override
+            public void got(String text) {
+              Log.info(text);
+            }
+          });
+          textBox.setText("");
+        }
+      }
+    });
+
+    textBox.setFocus(true);
+
+  }
 }

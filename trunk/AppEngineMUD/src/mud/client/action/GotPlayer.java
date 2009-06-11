@@ -1,10 +1,13 @@
 package mud.client.action;
 
-public class GotPlayer extends Got<GetNewPlayerResponse> {
+import mud.client.model.Character;
 
-	public void onSuccess(GetNewPlayerResponse result) {
-		// TODO Auto-generated method stub
+public abstract class GotPlayer extends Got<GetNewPlayerResponse> {
 
-	}
+  public void onSuccess(GetNewPlayerResponse result) {
+    got(result.getCharacter());
+  }
+
+  public abstract void got(Character character);
 
 }
