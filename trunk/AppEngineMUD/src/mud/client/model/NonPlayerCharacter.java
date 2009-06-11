@@ -49,4 +49,8 @@ public class NonPlayerCharacter implements Character, Serializable {
   public void removeHitPoints(int hitPoints) {
     this.hitPoints -= hitPoints;
   }
+
+  public String getId() {
+    return uniqueId;
+  }
 }

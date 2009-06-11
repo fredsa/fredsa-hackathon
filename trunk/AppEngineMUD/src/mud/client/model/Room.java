@@ -10,7 +10,7 @@ import mud.client.util.TimeIdSource;
  * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 12:27:53 PM To change this
  * template use File | Settings | File Templates.
  */
-public class Room implements Serializable {
+public class Room implements HasId, Serializable {
 
   private final String uniqueId;
   private final Set<Room> connectedRooms = new HashSet<Room>();
@@ -39,5 +39,8 @@ public class Room implements Serializable {
   public void addToRoom(Character character) {
     characterSet.add(character);
   }
-  
+
+  public String getId() {
+    return uniqueId;
+  }
 }
