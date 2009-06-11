@@ -2,7 +2,6 @@ package mud.server;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Collection;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
@@ -75,7 +74,7 @@ public class MudManager {
     map.put(room.getId(), player.getId());
     cache.put(KEY_ROOM_TO_PLAYER_HASHMAP, map);
 
-    cache.put(GLOBAL_ROOM_ID, room);
+    cache.put(globalRoomId, room);
     return player;
   }
 
