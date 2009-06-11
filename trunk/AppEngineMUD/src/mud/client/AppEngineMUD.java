@@ -13,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -33,7 +34,7 @@ public class AppEngineMUD implements EntryPoint {
     Widget loggerWidget = Log.getLogger(DivLogger.class).getWidget();
     rootPanel.add(loggerWidget);
 
-    rpcService.execute(new GetNewPlayerAction(), new GotPlayer() {
+    rpcService.execute(new GetNewPlayerAction(Window.prompt("Name", "Anon")), new GotPlayer() {
 
       @Override
       public void got(Character player) {
