@@ -37,7 +37,7 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     if ("say".equals(cmd) || "'".equals(cmd)) {
       String playerQuote = action.getPlayer().getName() + " said: " + text;
       mud.client.model.Character player = action.getPlayer();
-      Room room = mgr.getRoom(player.getId());
+      Room room = mgr.getRoomByPlayerId(player.getId());
       for (Character character : getCharacters(room.getCharacterIdSet())) {
         character.addMessage(playerQuote);
       }
