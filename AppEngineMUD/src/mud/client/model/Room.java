@@ -1,16 +1,15 @@
 package mud.client.model;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collection;
-import java.util.Collections;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import mud.client.util.TimeIdSource;
 
-/**
- * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 12:27:53 PM To change this
- * template use File | Settings | File Templates.
+/*
+ * * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 12:27:53 PM
+ * To change this template use File | Settings | File Templates.
  */
 public class Room implements HasId, Serializable {
 
@@ -54,5 +53,9 @@ public class Room implements HasId, Serializable {
 
   public String getId() {
     return uniqueId;
+  }
+
+  public String getDescription() {
+    return description;
   }
 }
