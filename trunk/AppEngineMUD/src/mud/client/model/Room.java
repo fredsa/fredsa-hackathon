@@ -24,7 +24,7 @@ public class Room implements HasId, Serializable {
     this.description = description;
   }
 
-  public Room createRoom(String description) {
+  public static Room createRoom(String description) {
     return new Room(TimeIdSource.getInstance().getNewId(), description);
   }
 
