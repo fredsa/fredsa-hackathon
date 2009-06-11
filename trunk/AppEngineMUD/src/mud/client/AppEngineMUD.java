@@ -1,5 +1,7 @@
 package mud.client;
 
+import mud.client.action.GetNewPlayerAction;
+import mud.client.action.GotPlayer;
 import mud.client.action.GotTypedResponse;
 import mud.client.action.TypedAction;
 
@@ -33,6 +35,7 @@ public class AppEngineMUD implements EntryPoint {
 		final TextBox textBox = new TextBox();
 		rootPanel.add(textBox);
 
+		rpcService.execute(new GetNewPlayerAction(), new GotPlayer());
 		textBox.addKeyDownHandler(new KeyDownHandler() {
 
 			public void onKeyDown(KeyDownEvent event) {

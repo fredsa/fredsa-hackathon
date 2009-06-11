@@ -1,13 +1,7 @@
 package mud.client.action;
 
-import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public abstract class GotTypedResponse implements AsyncCallback<TypedResponse> {
-
-	public void onFailure(Throwable caught) {
-		Log.error("GotTypedResponse", caught);
-	}
+public abstract class GotTypedResponse extends Got<TypedResponse> {
 
 	public void onSuccess(TypedResponse result) {
 		String text = result.getText();
