@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 1:34:42 PM To change this
  * template use File | Settings | File Templates.
  */
-public interface Character extends Serializable {
+public interface Character extends HasId, Serializable {
 
   String getName();
 
