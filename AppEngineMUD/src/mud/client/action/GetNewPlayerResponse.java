@@ -1,15 +1,19 @@
 package mud.client.action;
 
-import mud.client.model.Player;
+import mud.client.model.Character;
 
 public class GetNewPlayerResponse implements Response {
-	private final Player player;
+	private Character character;
 
-	public GetNewPlayerResponse(Player player) {
-		this.player = player;
+	private GetNewPlayerResponse() {
 	}
 
-	public Player getPlayer() {
-		return player;
+	public GetNewPlayerResponse(Character character) {
+		this.character = character;
 	}
+
+	public Character getCharacter() {
+		return character;
+	}
+
 }
