@@ -1,4 +1,4 @@
-package mud.client;
+package mud.client.action;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -17,5 +17,5 @@ public abstract class GotTypedResponse implements AsyncCallback<TypedResponse> {
 		got(text);
 	}
 
-	abstract void got(String text);
+	public abstract void got(String text);
 }

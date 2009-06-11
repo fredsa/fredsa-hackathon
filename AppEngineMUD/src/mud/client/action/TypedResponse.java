@@ -1,4 +1,4 @@
-package mud.client;
+package mud.client.action;
 
 public class TypedResponse implements Response {
 	private String responseText;

@@ -1,4 +1,4 @@
-package mud.client;
+package mud.client.action;
 
 import java.io.Serializable;
 

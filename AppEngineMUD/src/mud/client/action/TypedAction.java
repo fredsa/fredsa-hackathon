@@ -1,4 +1,4 @@
-package mud.client;
+package mud.client.action;
 
 public class TypedAction implements Action<TypedResponse> {
 
