@@ -2,7 +2,7 @@ package mud.client.model;
 
 import java.io.Serializable;
 
-import mud.client.util.MemcacheIdSource;
+import mud.client.util.TimeIdSource;
 
 /**
  * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 12:28:56 PM To change this
@@ -23,12 +23,12 @@ public class Player implements Character, Serializable {
   }
 
   public static Character createMortal(String name, int hitPoints) {
-    return new Player(MemcacheIdSource.getInstance().getNewId(), name, hitPoints,
+    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints,
         Character.LifeStyle.MORTAL);
   }
 
   public static Character createJedi(String name, int hitPoints) {
-    return new Player(MemcacheIdSource.getInstance().getNewId(), name, hitPoints,
+    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints,
         Character.LifeStyle.JEDI);
   }
 

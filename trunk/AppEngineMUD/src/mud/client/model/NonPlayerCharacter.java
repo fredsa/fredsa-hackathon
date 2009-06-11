@@ -2,7 +2,7 @@ package mud.client.model;
 
 import java.io.Serializable;
 
-import mud.client.util.MemcacheIdSource;
+import mud.client.util.TimeIdSource;
 
 /**
  * Created by IntelliJ IDEA. User: teejae Date: Jun 11, 2009 Time: 1:46:43 PM To change this
@@ -26,7 +26,7 @@ public class NonPlayerCharacter implements Character, Serializable {
   }
 
   public static Character createOgre() {
-    return new NonPlayerCharacter(MemcacheIdSource.getInstance().getNewId(), OGRE_NAME,
+    return new NonPlayerCharacter(TimeIdSource.getInstance().getNewId(), OGRE_NAME,
         OGRE_HIT_POINTS, Character.LifeStyle.MORTAL);
   }
 
