@@ -1,5 +1,7 @@
 package mud.client;
 
-public interface Action<T extends Response> {
+import java.io.Serializable;
+
+public interface Action<T extends Response> extends Serializable {
 
 }
