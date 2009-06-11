@@ -13,8 +13,8 @@ import mud.client.util.TimeIdSource;
 public class Room implements HasId, Serializable {
 
   private final String uniqueId;
-  private final Set<Room> connectedRooms = new HashSet<Room>();
-  private final Set<Character> characterSet = new HashSet<Character>();
+  private final Set<String> connectedRoomIdSet = new HashSet<String>();
+  private final Set<String> characterIdSet = new HashSet<String>();
 
   private Room(String uniqueId) {
     this.uniqueId = uniqueId;
@@ -25,19 +25,19 @@ public class Room implements HasId, Serializable {
   }
 
   public void connectToRoom(Room room) {
-    connectedRooms.add(room);
+    connectedRoomIdSet.add(room.getId());
   }
 
   public void disconnectFromRoom(Room room) {
-    connectedRooms.remove(room);
+    connectedRoomIdSet.remove(room.getId());
   }
 
-  public void removeFromRoom(Character character) {
-    characterSet.remove(character);
+  public void removeCharacter(Character character) {
+    characterIdSet.remove(character.getId());
   }
 
-  public void addToRoom(Character character) {
-    characterSet.add(character);
+  public void addCharacter(Character character) {
+    characterIdSet.add(character.getId());
   }
 
   public String getId() {
