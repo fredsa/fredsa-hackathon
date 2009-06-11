@@ -1,5 +1,8 @@
 package mud.server;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import mud.client.RpcService;
 import mud.client.action.Action;
 import mud.client.action.GetNewPlayerAction;
@@ -7,13 +10,10 @@ import mud.client.action.GetNewPlayerResponse;
 import mud.client.action.Response;
 import mud.client.action.TypedAction;
 import mud.client.action.TypedResponse;
-import mud.client.model.*;
 import mud.client.model.Character;
+import mud.client.model.Room;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 @SuppressWarnings("serial")
 public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
@@ -71,7 +71,7 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
   }
 
   public GetNewPlayerResponse execute(GetNewPlayerAction action) {
-    return new GetNewPlayerResponse(mgr.createPlayer());
+    return new GetNewPlayerResponse(mgr.createPlayer(action.getName()));
   }
 
   public <T extends Response> T execute(Action action) {
