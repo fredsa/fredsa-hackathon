@@ -35,18 +35,22 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     String cmd = text.substring(0, pos);
     text = text.substring(pos + 1).trim();
     final Character player = action.getPlayer();
+    final Room room = mgr.getRoomByPlayerId(player.getId());
 
     StringBuffer outputBuffer = new StringBuffer();
     if ("say".equals(cmd) || "'".equals(cmd)) {
       String playerQuote = player.getName() + " said: " + text;
-      Room room = mgr.getRoomByPlayerId(player.getId());
-      for (Character character : getCharacters(room.getCharacterIdSet())) {
-        character.addMessage(playerQuote);
-      }
+      broadcastMessage(room, playerQuote);
     } else if ("hit".equals(cmd)) {
-      outputBuffer.append(player.getName() + " hit " + text);
+      String otherPlayerId = text;
+
+      if (room.getCharacterIdSet().contains(otherPlayerId)) {
+        Character otherPlayer = mgr.getCharacter(otherPlayerId);
+        otherPlayer.hitBy(player);
+
+        broadcastMessage(room, player.getName() + " hit " + text);
+      }
     } else if ("look".equals(cmd)) {
-      Room room = mgr.getRoomByPlayerId(player.getId());
       outputBuffer.append(room.getDescription());
       for (Character character : getCharacters(room.getCharacterIdSet())) {
         outputBuffer.append("\n- " + character.getName());
@@ -58,6 +62,12 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     outputBuffer.append(player.getUnreadMessages());
 
     return new TypedResponse(outputBuffer.toString());
+  }
+
+  private void broadcastMessage(Room room, String message) {
+    for (Character character : getCharacters(room.getCharacterIdSet())) {
+      character.addMessage(message);
+    }
   }
 
   public GetNewPlayerResponse execute(GetNewPlayerAction action) {
