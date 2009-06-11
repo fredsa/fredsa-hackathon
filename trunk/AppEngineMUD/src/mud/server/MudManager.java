@@ -71,10 +71,12 @@ public class MudManager {
 
     HashMap<String, String> map = getRoomToPlayerMap();
     room.addCharacter(player);
-    map.put(room.getId(), player.getId());
+    map.put(player.getId(), room.getId());
     cache.put(KEY_ROOM_TO_PLAYER_HASHMAP, map);
 
     cache.put(globalRoomId, room);
+
+    cache.put(player.getId(), player);
     return player;
   }
 

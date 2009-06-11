@@ -14,7 +14,7 @@
 	<!-- Other module inherits                                      -->
 	<inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />
 	<set-configuration-property name="log_pattern"
-		value="[%-5p] %m%n" />
+		value="%m%n" />
 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='mud.client.AppEngineMUD' />
