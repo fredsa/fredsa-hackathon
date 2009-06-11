@@ -9,10 +9,17 @@ import mud.client.util.TimeIdSource;
  * To change this template use File | Settings | File Templates.
  */
 public class Player implements Character, Serializable {
-  private String uniqueId;
+  private static final int JEDI_STRENGTH = 7;
+  private static final int MORTAL_STRENGTH = 3;
 
-  private String name;
-  private LifeStyle lifeStyle;
+  private static final int MORTAL_HIT_POINTS = 30;
+  private static final int JEDI_HIT_POINTS = MORTAL_HIT_POINTS;
+
+  private /*final*/ String uniqueId;
+
+  private /*final*/ int strength;
+  private /*final*/ String name;
+  private /*final*/ LifeStyle lifeStyle;
   private int hitPoints;
 
   /**
@@ -21,20 +28,29 @@ public class Player implements Character, Serializable {
   private Player() {
   }
 
-  private Player(String uniqueId, String name, int hitPoints, LifeStyle lifeStyle) {
+  private Player(String uniqueId, String name, int hitPoints, int strength, LifeStyle lifeStyle) {
     this.uniqueId = uniqueId;
     this.name = name;
     this.hitPoints = hitPoints;
+    this.strength = strength;
     this.lifeStyle = lifeStyle;
   }
 
+  public static Character createMortal(String name) {
+    return createMortal(name, MORTAL_HIT_POINTS);
+  }
+
   public static Character createMortal(String name, int hitPoints) {
-    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints,
+    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints, MORTAL_STRENGTH,
         Character.LifeStyle.MORTAL);
   }
 
+  public static Character createJedi(String name) {
+    return createJedi(name, JEDI_HIT_POINTS);
+  }
+
   public static Character createJedi(String name, int hitPoints) {
-    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints,
+    return new Player(TimeIdSource.getInstance().getNewId(), name, hitPoints, JEDI_STRENGTH,
         Character.LifeStyle.JEDI);
   }
 
@@ -55,7 +71,20 @@ public class Player implements Character, Serializable {
   }
 
   public void removeHitPoints(int hitPoints) {
-    this.hitPoints -= hitPoints;
+    this.hitPoints = Math.max(0, this.hitPoints - hitPoints);
+  }
+
+  public void hitBy(Character character) {
+    if ((lifeStyle == LifeStyle.JEDI) && (character.getLifeStyle() != LifeStyle.JEDI)) {
+      // jedi is invincible
+      return;
+    } else {
+      removeHitPoints(character.getStrength());
+    }
+  }
+
+  public int getStrength() {
+    return strength;
   }
 
   public String getId() {

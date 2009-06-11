@@ -11,23 +11,26 @@ import mud.client.util.TimeIdSource;
 public class NonPlayerCharacter implements Character, Serializable {
   private static final String OGRE_NAME = "ogre";
   private static final int OGRE_HIT_POINTS = 20;
+  private static final int OGRE_STRENGTH = 5;
 
   private final String uniqueId;
-
+  private final int strength;
   private final String name;
   private final LifeStyle lifeStyle;
   private int hitPoints;
 
-  private NonPlayerCharacter(String uniqueId, String name, int hitPoints, LifeStyle lifeStyle) {
+  private NonPlayerCharacter(String uniqueId, String name, int hitPoints, int strength,
+      LifeStyle lifeStyle) {
     this.uniqueId = uniqueId;
     this.name = name;
     this.hitPoints = hitPoints;
+    this.strength = strength;
     this.lifeStyle = lifeStyle;
   }
 
   public static Character createOgre() {
     return new NonPlayerCharacter(TimeIdSource.getInstance().getNewId(), OGRE_NAME,
-        OGRE_HIT_POINTS, Character.LifeStyle.MORTAL);
+        OGRE_HIT_POINTS, OGRE_STRENGTH, Character.LifeStyle.MORTAL);
   }
 
   public String getName() {
@@ -47,7 +50,15 @@ public class NonPlayerCharacter implements Character, Serializable {
   }
 
   public void removeHitPoints(int hitPoints) {
-    this.hitPoints -= hitPoints;
+    this.hitPoints = Math.max(0, this.hitPoints - hitPoints);
+  }
+
+  public void hitBy(Character character) {
+    this.removeHitPoints(character.getStrength());
+  }
+
+  public int getStrength() {
+    return strength;
   }
 
   public String getId() {
