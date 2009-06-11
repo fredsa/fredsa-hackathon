@@ -34,17 +34,12 @@ public class MudManager {
     return singleton;
   }
 
-  public Room getRoom(String playerId) {
-    String roomId = getRoomId(playerId);
-    Room room = (Room) cache.get(roomId);
-    if (room == null) {
-      room = Room.createRoom("A new room");
-      cache.put(room.getId(), room);
-    }
-    return room;
+  public Room getRoomByPlayerId(String playerId) {
+    String roomId = getRoomIdByPlayerId(playerId);
+    return getRoomByRoomId(roomId);
   }
 
-  private String getRoomId(String playerId) {
+  private String getRoomIdByPlayerId(String playerId) {
     HashMap<String, String> map = (HashMap<String, String>) cache.get(KEY_ROOM_TO_PLAYER_HASHMAP);
     if (map == null) {
       map = new HashMap<String, String>();
@@ -58,11 +53,20 @@ public class MudManager {
   }
 
   public Character createPlayer() {
-    Room room = getRoom(KEY_GLOBAL_ROOM);
+    Room room = getRoomByRoomId(KEY_GLOBAL_ROOM);
     Character player = Player.createJedi("anon", 100);
     room.addCharacter(player);
     cache.put(KEY_GLOBAL_ROOM, room);
     return player;
+  }
+
+  private Room getRoomByRoomId(String roomId) {
+    Room room = (Room) cache.get(roomId);
+    if (room == null) {
+      room = Room.createRoom(KEY_GLOBAL_ROOM.equals(roomId) ? KEY_GLOBAL_ROOM : "A new room");
+      cache.put(room.getId(), room);
+    }
+    return room;
   }
 
 }
