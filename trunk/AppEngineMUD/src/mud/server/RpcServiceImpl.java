@@ -44,14 +44,21 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     } else if ("hit".equals(cmd)) {
       String otherPlayerName = text;
 
+      boolean successful = false;
       for (Character character : getCharacters(room.getCharacterIdSet())) {
         if (otherPlayerName.equals(character.getName())) {
           Character otherPlayer = character;
           otherPlayer.hitBy(player);
 
           broadcastMessage(room, player.getName() + " hit " + text);
+          successful = true;
           break;
         }
+      }
+
+      if (!successful) {
+        broadcastMessage(room, player.getName() + " tried to hit "
+            + otherPlayerName + ", but that person is not here");
       }
     } else if ("look".equals(cmd)) {
       outputBuffer.append(room.getDescription());
