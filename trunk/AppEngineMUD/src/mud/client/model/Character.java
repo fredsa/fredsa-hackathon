@@ -18,5 +18,9 @@ public interface Character extends HasId, Serializable {
 
   void removeHitPoints(int hitPoints);
 
+  void hitBy(Character character);
+
+  int getStrength();
+
   public enum LifeStyle {MORTAL, JEDI}
 }
