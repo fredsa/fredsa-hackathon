@@ -2,8 +2,8 @@ package mud.client.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import mud.client.util.TimeIdSource;
 
@@ -18,12 +18,12 @@ public class Player implements Character, Serializable {
   private static final int MORTAL_HIT_POINTS = 30;
   private static final int JEDI_HIT_POINTS = MORTAL_HIT_POINTS;
 
-  private /*final*/ String uniqueId;
+  private/*final*/String uniqueId;
 
-  private /*final*/ int strength;
-  private /*final*/ String name;
-  private /*final*/ LifeStyle lifeStyle;
-  private /*final*/ List<String> unreadMessages = new ArrayList<String>();
+  private/*final*/int strength;
+  private/*final*/String name;
+  private/*final*/LifeStyle lifeStyle;
+  private/*final*/List<String> unreadMessages = new ArrayList<String>();
   private int hitPoints;
 
   /**

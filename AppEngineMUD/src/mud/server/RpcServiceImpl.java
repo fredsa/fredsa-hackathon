@@ -34,7 +34,7 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     int pos = (text).indexOf(" ");
     String cmd = text.substring(0, pos);
     text = text.substring(pos + 1).trim();
-    final Character player = action.getPlayer();
+    Character player = action.getPlayer();
     final Room room = mgr.getRoomByPlayerId(player.getId());
     final Collection<Character> characters = getCharacters(room.getCharacterIdSet());
 
@@ -58,8 +58,8 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
       }
 
       if (!successful) {
-        broadcastMessage(characters, player.getName() + " tried to hit "
-            + otherPlayerName + ", but that person is not here");
+        broadcastMessage(characters, player.getName() + " tried to hit " + otherPlayerName
+            + ", but that person is not here");
       }
     } else if ("look".equals(cmd)) {
       outputBuffer.append(room.getDescription());
@@ -70,8 +70,15 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
       outputBuffer.append("what?! Unknown command: " + text);
     }
 
-    outputBuffer.append(player.getUnreadMessages());
     persistCharacters(characters);
+
+    player = mgr.getCharacter(player.getId());
+    for (String m : player.getUnreadMessages()) {
+      outputBuffer.append(m);
+    }
+    player.clearUnreadMessages();
+    mgr.persistCharacter(player);
+
     return new TypedResponse(outputBuffer.toString());
   }
 
