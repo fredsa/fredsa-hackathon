@@ -16,7 +16,7 @@ import com.allen_sauer.gwt.log.client.Log;
 
 public class MudManager {
   private static final Object KEY_ROOM_TO_PLAYER_HASHMAP = "KEY_ROOM_TO_PLAYER_HASHMAP";
-  private static final String KEY_GLOBAL_ROOM = null;
+  private static final String KEY_GLOBAL_ROOM = "KEY_GLOBAL_ROOM";
   private Cache cache;
 
   private MudManager() {
