@@ -15,7 +15,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
 
-  RoomManager mgr = RoomManager.get();
+  MudManager mgr = MudManager.get();
 
   public TypedResponse execute(TypedAction action) {
     String text = action.getText().trim() + " ";
@@ -28,7 +28,11 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
       return new TypedResponse(action.getPlayer().getName() + " hit " + text);
     } else if ("look".equals(cmd)) {
       Room room = mgr.getRoom(action.getPlayer().getId());
-      return new TypedResponse(action.getPlayer().getName() + " hit " + text);
+      String output = room.getDescription();
+      for (String characterId : room.getCharacterIdSet()) {
+        output += "\n- " + mgr.getCharacter(characterId).getName();
+      }
+      return new TypedResponse(output);
     } else {
       return new TypedResponse("what?! Unknown command: " + text);
     }

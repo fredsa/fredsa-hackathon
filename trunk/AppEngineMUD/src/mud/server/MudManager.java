@@ -8,15 +8,16 @@ import javax.cache.CacheException;
 import javax.cache.CacheFactory;
 import javax.cache.CacheManager;
 
+import mud.client.model.Character;
 import mud.client.model.Room;
 
 import com.allen_sauer.gwt.log.client.Log;
 
-public class RoomManager {
+public class MudManager {
   private static final Object KEY_ROOM_TO_PLAYER_HASHMAP = "KEY_ROOM_TO_PLAYER_HASHMAP";
   private Cache cache;
 
-  private RoomManager() {
+  private MudManager() {
     try {
       CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
       cache = cacheFactory.createCache(Collections.emptyMap());
@@ -25,15 +26,20 @@ public class RoomManager {
     }
   }
 
-  private static RoomManager singleton = new RoomManager();
+  private static MudManager singleton = new MudManager();
 
-  public static RoomManager get() {
+  public static MudManager get() {
     return singleton;
   }
 
   public Room getRoom(String playerId) {
     String roomId = getRoomId(playerId);
-    return (Room) cache.get(roomId);
+    Room room = (Room) cache.get(roomId);
+    if (room == null) {
+      room = Room.createRoom("A new room");
+      cache.put(room.getId(), room);
+    }
+    return room;
   }
 
   private String getRoomId(String playerId) {
@@ -43,5 +49,9 @@ public class RoomManager {
       cache.put(KEY_ROOM_TO_PLAYER_HASHMAP, map);
     }
     return map.get(playerId);
+  }
+
+  public Character getCharacter(String characterId) {
+    return (Character) cache.get(characterId);
   }
 }
