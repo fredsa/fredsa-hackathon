@@ -1,6 +1,9 @@
 package mud.client.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Collections;
 
 import mud.client.util.TimeIdSource;
 
@@ -9,6 +12,7 @@ import mud.client.util.TimeIdSource;
  * template use File | Settings | File Templates.
  */
 public class NonPlayerCharacter implements Character, Serializable {
+  private static final List<String> EMPTY_LIST = new LinkedList<String>();
   private static final String OGRE_NAME = "ogre";
   private static final int OGRE_HIT_POINTS = 20;
   private static final int OGRE_STRENGTH = 5;
@@ -59,6 +63,16 @@ public class NonPlayerCharacter implements Character, Serializable {
 
   public int getStrength() {
     return strength;
+  }
+
+  public void addMessage(String message) {
+  }
+
+  public List<String> getUnreadMessages() {
+    return Collections.unmodifiableList(getUnreadMessages());
+  }
+
+  public void clearUnreadMessages() {
   }
 
   public String getId() {

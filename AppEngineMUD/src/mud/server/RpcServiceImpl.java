@@ -7,14 +7,27 @@ import mud.client.action.GetNewPlayerResponse;
 import mud.client.action.Response;
 import mud.client.action.TypedAction;
 import mud.client.action.TypedResponse;
-import mud.client.model.Room;
+import mud.client.model.*;
+import mud.client.model.Character;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 @SuppressWarnings("serial")
 public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
 
   MudManager mgr = MudManager.get();
+
+  private Collection<Character> getCharacters(Collection<String> characterIds) {
+    Collection<Character> characters = new LinkedList<Character>();
+    for (String characterId : characterIds) {
+      characters.add(mgr.getCharacter(characterId));
+    }
+
+    return characters;
+  }
 
   public TypedResponse execute(TypedAction action) {
     String text = action.getText().trim() + " ";
@@ -22,14 +35,21 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     String cmd = text.substring(0, pos);
     text = text.substring(pos + 1).trim();
     if ("say".equals(cmd) || "'".equals(cmd)) {
-      return new TypedResponse(action.getPlayer().getName() + " said: " + text);
+      String playerQuote = action.getPlayer().getName() + " said: " + text;
+      mud.client.model.Character player = action.getPlayer();
+      Room room = mgr.getRoom(player.getId());
+      for (Character character : getCharacters(room.getCharacterIdSet())) {
+        character.addMessage(playerQuote);
+      }
+
+      return new TypedResponse(playerQuote);
     } else if ("hit".equals(cmd)) {
       return new TypedResponse(action.getPlayer().getName() + " hit " + text);
     } else if ("look".equals(cmd)) {
       Room room = mgr.getRoomByPlayerId(action.getPlayer().getId());
       String output = room.getDescription();
-      for (String characterId : room.getCharacterIdSet()) {
-        output += "\n- " + mgr.getCharacter(characterId).getName();
+      for (Character character : getCharacters(room.getCharacterIdSet())) {
+        output += "\n- " + character.getName();
       }
       return new TypedResponse(output);
     } else {
