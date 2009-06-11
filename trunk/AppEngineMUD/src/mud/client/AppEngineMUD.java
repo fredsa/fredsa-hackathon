@@ -1,5 +1,8 @@
 package mud.client;
 
+import mud.client.action.GotTypedResponse;
+import mud.client.action.TypedAction;
+
 import com.allen_sauer.gwt.log.client.DivLogger;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -38,7 +41,7 @@ public class AppEngineMUD implements EntryPoint {
 							new GotTypedResponse() {
 
 								@Override
-								void got(String text) {
+								public void got(String text) {
 									Log.info(text);
 								}
 							});
