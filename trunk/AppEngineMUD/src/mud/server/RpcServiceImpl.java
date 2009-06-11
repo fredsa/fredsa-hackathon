@@ -8,6 +8,7 @@ import mud.client.action.Response;
 import mud.client.action.TypedAction;
 import mud.client.action.TypedResponse;
 import mud.client.model.Player;
+import mud.client.model.Room;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -24,6 +25,9 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     if ("say".equals(cmd) || "'".equals(cmd)) {
       return new TypedResponse(action.getPlayer().getName() + " said: " + text);
     } else if ("hit".equals(cmd)) {
+      return new TypedResponse(action.getPlayer().getName() + " hit " + text);
+    } else if ("look".equals(cmd)) {
+      Room room = mgr.getRoom(action.getPlayer().getId());
       return new TypedResponse(action.getPlayer().getName() + " hit " + text);
     } else {
       return new TypedResponse("what?! Unknown command: " + text);
