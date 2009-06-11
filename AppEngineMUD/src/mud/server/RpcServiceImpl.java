@@ -36,33 +36,34 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     text = text.substring(pos + 1).trim();
     final Character player = action.getPlayer();
     final Room room = mgr.getRoomByPlayerId(player.getId());
+    final Collection<Character> characters = getCharacters(room.getCharacterIdSet());
 
     StringBuffer outputBuffer = new StringBuffer();
     if ("say".equals(cmd) || "'".equals(cmd)) {
       String playerQuote = player.getName() + " said: " + text;
-      broadcastMessage(room, playerQuote);
+      broadcastMessage(characters, playerQuote);
     } else if ("hit".equals(cmd)) {
       String otherPlayerName = text;
 
       boolean successful = false;
-      for (Character character : getCharacters(room.getCharacterIdSet())) {
+      for (Character character : characters) {
         if (otherPlayerName.equals(character.getName())) {
           Character otherPlayer = character;
           otherPlayer.hitBy(player);
 
-          broadcastMessage(room, player.getName() + " hit " + text);
+          broadcastMessage(characters, player.getName() + " hit " + text);
           successful = true;
           break;
         }
       }
 
       if (!successful) {
-        broadcastMessage(room, player.getName() + " tried to hit "
+        broadcastMessage(characters, player.getName() + " tried to hit "
             + otherPlayerName + ", but that person is not here");
       }
     } else if ("look".equals(cmd)) {
       outputBuffer.append(room.getDescription());
-      for (Character character : getCharacters(room.getCharacterIdSet())) {
+      for (Character character : characters) {
         outputBuffer.append("\n- " + character.getName());
       }
     } else {
@@ -70,13 +71,19 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
     }
 
     outputBuffer.append(player.getUnreadMessages());
-
+    persistCharacters(characters);
     return new TypedResponse(outputBuffer.toString());
   }
 
-  private void broadcastMessage(Room room, String message) {
-    for (Character character : getCharacters(room.getCharacterIdSet())) {
+  private void broadcastMessage(Collection<Character> characters, String message) {
+    for (Character character : characters) {
       character.addMessage(message);
+    }
+  }
+
+  private void persistCharacters(Collection<Character> characters) {
+    for (Character character : characters) {
+      mgr.persistCharacter(character);
     }
   }
 

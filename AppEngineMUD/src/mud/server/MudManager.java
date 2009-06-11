@@ -89,4 +89,7 @@ public class MudManager {
     return room;
   }
 
+  public void persistCharacter(Character character) {
+    cache.put(character.getId(), character);
+  }
 }
